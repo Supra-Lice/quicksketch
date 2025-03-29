@@ -8,9 +8,6 @@ from urllib.parse import quote, unquote
 
 app = Flask(__name__, template_folder="templates", static_folder="static")
 
-# Configuration
-DATA_FOLDER = "data"
-
 # Timer options in seconds
 TIMER_OPTIONS = {
     "30 seconds": 30,
@@ -33,7 +30,7 @@ class Subfolder:
 @app.route("/")
 def index() -> str:
     """Get the index page."""
-    path = Path(DATA_FOLDER)
+    path = Path(app.config["DATA_FOLDER"])
     if not path.is_dir():
         abort(404)
 
@@ -50,7 +47,7 @@ def index() -> str:
 @app.route("/random/<subfolder>")
 def random_image(subfolder: str) -> Response:
     """Sample a random image."""
-    path = Path(DATA_FOLDER) / unquote(subfolder)
+    path = Path(app.config["DATA_FOLDER"]) / unquote(subfolder)
     if not path.is_dir():
         abort(404)
 
@@ -66,7 +63,7 @@ def random_image(subfolder: str) -> Response:
 @app.route("/images/<subfolder>/<filename>")
 def serve_image(subfolder: str, filename: str) -> Response:
     """Get a single image content."""
-    return send_from_directory(Path(DATA_FOLDER) / unquote(subfolder), unquote(filename))
+    return send_from_directory(Path(app.config["DATA_FOLDER"]) / unquote(subfolder), unquote(filename))
 
 
 def get_args() -> argparse.Namespace:
@@ -105,8 +102,7 @@ def get_args() -> argparse.Namespace:
 
 def main():
     args = get_args()
-    global DATA_FOLDER
-    DATA_FOLDER = str(Path(args.folder).absolute())
+    app.config["DATA_FOLDER"] = Path(args.folder).absolute()
     if not Path(args.folder).is_dir():
         raise FileNotFoundError(f"Data folder does not exist: {args.folder}.")
 
