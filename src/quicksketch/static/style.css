@@ -143,6 +143,14 @@ button:hover {
     width: 100%;
 }
 
+#pause-btn {
+    background-color: #FFA726;
+}
+
+#pause-btn:hover {
+    background-color: #FB8C00;
+}
+
 #stop-btn {
     margin-top: 15px;
     background-color: #d32f2f;

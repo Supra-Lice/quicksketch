@@ -6,6 +6,7 @@ let timeRemaining = 0;
 let imageHistory = [];
 let currentImageIndex = -1;
 let preloadedImageUrl = null;
+let isPaused = false;
 document.addEventListener('DOMContentLoaded', function () {
     // DOM elements
     const setupDiv = document.getElementById('setup');
@@ -15,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const timerSeconds = document.getElementById('timer-seconds');
     const startBtn = document.getElementById('start-btn');
     const backBtn = document.getElementById('back-btn');
+    const pauseBtn = document.getElementById('pause-btn');
     const nextBtn = document.getElementById('next-btn');
     const stopBtn = document.getElementById('stop-btn');
     const timerDisplay = document.getElementById('timer-display');
@@ -49,6 +51,8 @@ document.addEventListener('DOMContentLoaded', function () {
         clearInterval(timerInterval);
         setupDiv.classList.remove('hidden');
         practiceDiv.classList.add('hidden');
+        isPaused = false;
+        pauseBtn.textContent = 'Pause';
     });
 
     // Get next image
@@ -68,7 +72,28 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Update UI
             updateTimerDisplay(0);
+            
+            // Reset pause state
+            isPaused = false;
+            pauseBtn.textContent = 'Pause';
         }
+    });
+    
+    // Pause or resume timer
+    pauseBtn.addEventListener('click', () => {
+        if (timerDuration <= 0) return; // Don't do anything if timer is unlimited
+        
+        if (!isPaused) {
+            // Pause the timer
+            clearInterval(timerInterval);
+            pauseBtn.textContent = 'Resume';
+        } else {
+            // Resume the timer
+            startTimerFromCurrentTime();
+            pauseBtn.textContent = 'Pause';
+        }
+        
+        isPaused = !isPaused;
     });
 
 
@@ -92,6 +117,10 @@ document.addEventListener('DOMContentLoaded', function () {
     function getNextImage() {
         // Clear any existing timer
         clearInterval(timerInterval);
+        
+        // Reset pause state
+        isPaused = false;
+        pauseBtn.textContent = 'Pause';
 
         if (preloadedImageUrl) {
             // Use the preloaded image if available
@@ -153,11 +182,15 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Start the timer
+    // Start the timer from the beginning
     function startTimer() {
         timeRemaining = timerDuration;
         updateTimerDisplay(timeRemaining);
-
+        startTimerFromCurrentTime();
+    }
+    
+    // Start the timer from current time remaining
+    function startTimerFromCurrentTime() {
         timerInterval = setInterval(() => {
             timeRemaining--;
             updateTimerDisplay(timeRemaining);
