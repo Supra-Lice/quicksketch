@@ -8,17 +8,6 @@ from urllib.parse import quote, unquote
 
 app = Flask(__name__, template_folder="templates", static_folder="static")
 
-# Timer options in seconds
-TIMER_OPTIONS = {
-    "30 seconds": 30,
-    "60 seconds": 60,
-    "2 minutes": 120,
-    "5 minutes": 300,
-    "15 minutes": 900,
-    "30 minutes": 1800,
-    "unlimited": -1,
-}
-
 
 @dataclass
 class Subfolder:
@@ -41,7 +30,7 @@ def index() -> str:
             subfolders.append(Subfolder(item.name, quote(item.name), count))
     subfolders.sort(key=attrgetter("count"), reverse=True)
 
-    return render_template("index.html", subfolders=subfolders, timer_options=TIMER_OPTIONS, default_timer="2 minutes")
+    return render_template("index.html", subfolders=subfolders)
 
 
 @app.route("/random/<subfolder>")

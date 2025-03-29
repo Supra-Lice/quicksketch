@@ -1,6 +1,6 @@
 // Variables to track state
 let currentSubfolder = '';
-let timerDuration = 120;
+let timerDuration = 60;
 let timerInterval = null;
 let timeRemaining = 0;
 let imageHistory = [];
@@ -11,7 +11,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const setupDiv = document.getElementById('setup');
     const practiceDiv = document.getElementById('practice');
     const subfolderSelect = document.getElementById('subfolder');
-    const timerSelect = document.getElementById('timer');
+    const timerMinutes = document.getElementById('timer-minutes');
+    const timerSeconds = document.getElementById('timer-seconds');
     const startBtn = document.getElementById('start-btn');
     const backBtn = document.getElementById('back-btn');
     const nextBtn = document.getElementById('next-btn');
@@ -23,7 +24,9 @@ document.addEventListener('DOMContentLoaded', function () {
     // Start practice session
     startBtn.addEventListener('click', () => {
         currentSubfolder = decodeURIComponent(subfolderSelect.value);
-        timerDuration = parseInt(timerSelect.value);
+        const minutes = parseInt(timerMinutes.value) || 0;
+        const seconds = parseInt(timerSeconds.value) || 0;
+        timerDuration = (minutes * 60) + seconds;
 
         // Set the subfolder header
         currentSubfolderDisplay.textContent = `Category: ${currentSubfolder}`;

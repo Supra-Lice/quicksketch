@@ -19,12 +19,12 @@
             </select>
         </div>
         <div>
-            <label for="timer">Select timer:</label>
-            <select id="timer">
-                {% for label, seconds in timer_options.items() %}
-                <option value="{{ seconds }}" {% if label == default_timer %}selected{% endif %}>{{ label }}</option>
-                {% endfor %}
-            </select>
+            <label for="timer-container">Set timer:</label>
+            <div id="timer-container" class="timer-input-container">
+                <input type="number" id="timer-minutes" min="0" max="59" value="1" class="timer-input"> : 
+                <input type="number" id="timer-seconds" min="0" max="59" value="0" class="timer-input">
+                <span class="timer-label">min : sec</span>
+            </div>
         </div>
         <button id="start-btn">Start Practice</button>
     </div>

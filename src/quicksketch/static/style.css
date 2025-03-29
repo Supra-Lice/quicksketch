@@ -69,3 +69,26 @@ label {
     width: 120px;
     margin-bottom: 10px;
 }
+
+.timer-input-container {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin: 10px 0;
+}
+
+.timer-input {
+    width: 50px;
+    text-align: center;
+    padding: 8px;
+    background-color: #333;
+    color: #e0e0e0;
+    border: 1px solid #555;
+    border-radius: 4px;
+}
+
+.timer-label {
+    font-size: 0.8em;
+    color: #999;
+    margin-left: 5px;
+}
