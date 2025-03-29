@@ -133,8 +133,22 @@ button:hover {
 .controls {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 5px;
     margin-top: 10px;
+}
+
+.shortcut-hint {
+    font-size: 0.8em;
+    text-align: center;
+    color: #999;
+    margin-bottom: 10px;
+}
+
+.shortcuts-hint {
+    font-size: 0.8em;
+    text-align: center;
+    color: #999;
+    margin-top: 5px;
 }
 
 .controls button {

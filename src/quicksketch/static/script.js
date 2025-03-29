@@ -22,6 +22,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const timerDisplay = document.getElementById('timer-display');
     const sketchImage = document.getElementById('sketch-image');
     const currentSubfolderDisplay = document.getElementById('current-subfolder');
+    
+    // Track if we're in practice mode
+    let inPracticeMode = false;
 
     // Start practice session
     startBtn.addEventListener('click', () => {
@@ -40,6 +43,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Switch view
         setupDiv.classList.add('hidden');
         practiceDiv.classList.remove('hidden');
+        inPracticeMode = true;
 
         // Start preloading first, then get first image
         preloadNextImage();
@@ -51,6 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
         clearInterval(timerInterval);
         setupDiv.classList.remove('hidden');
         practiceDiv.classList.add('hidden');
+        inPracticeMode = false;
         isPaused = false;
         pauseBtn.textContent = 'Pause';
     });
@@ -214,4 +219,38 @@ document.addEventListener('DOMContentLoaded', function () {
         const remainingSeconds = seconds % 60;
         timerDisplay.textContent = `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
     }
+    
+    // Handle keyboard shortcuts
+    document.addEventListener('keydown', function(event) {
+        // Prevent default behavior for these keys
+        if (['Space', 'ArrowLeft', 'ArrowRight', 'Enter', 'Escape', 'KeyW', 'KeyD'].includes(event.code)) {
+            event.preventDefault();
+        }
+        
+        // Setup screen shortcuts
+        if (!inPracticeMode) {
+            if (event.code === 'Enter') {
+                startBtn.click();
+            }
+        } 
+        // Practice screen shortcuts
+        else {
+            switch(event.code) {
+                case 'Space':
+                    pauseBtn.click();
+                    break;
+                case 'ArrowLeft':
+                case 'KeyW':
+                    backBtn.click();
+                    break;
+                case 'ArrowRight':
+                case 'KeyD':
+                    nextBtn.click();
+                    break;
+                case 'Escape':
+                    stopBtn.click();
+                    break;
+            }
+        }
+    });
 });
