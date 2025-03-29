@@ -1,7 +1,9 @@
-from flask import Flask, render_template, send_from_directory, jsonify
+from operator import itemgetter
 import os
 import random
 import argparse
+from flask import Flask, render_template, send_from_directory, jsonify
+from pathlib import Path
 
 app = Flask(__name__, template_folder="templates", static_folder="static")
 
@@ -22,31 +24,33 @@ TIMER_OPTIONS = {
 
 @app.route("/")
 def index():
-    subfolders = [f for f in os.listdir(DATA_FOLDER) if os.path.isdir(os.path.join(DATA_FOLDER, f))]
-
+    subfolders = []
+    for item in Path(DATA_FOLDER).iterdir():
+        if item.is_dir():
+            count = len([f for f in item.iterdir() if f.is_file()])
+            subfolders.append({"name": item.name, "count": count})
+    subfolders.sort(key=itemgetter("count"), reverse=True)
     return render_template("index.html", subfolders=subfolders, timer_options=TIMER_OPTIONS, default_timer="2 minutes")
 
 
 @app.route("/random/<subfolder>")
 def random_image(subfolder):
-    subfolder_path = os.path.join(DATA_FOLDER, subfolder)
-
-    if not os.path.exists(subfolder_path):
+    path = Path(DATA_FOLDER) / subfolder
+    if not path.isdir():
         return "Subfolder not found", 404
 
-    files = [f for f in os.listdir(subfolder_path) if os.path.isfile(os.path.join(subfolder_path, f))]
+    files = [f for f in path.iterdir() if f.isfile()]
 
     if not files:
         return "No files in subfolder", 404
 
     random_file = random.choice(files)
 
-    return jsonify({"image_url": f"/images/{subfolder}/{random_file}"})
+    return jsonify({"image_url": f"/images/{subfolder}/{random_file.name}"})
 
 
 @app.route("/images/<subfolder>/<filename>")
 def serve_image(subfolder, filename):
-    print(os.path.isfile(os.path.join(DATA_FOLDER, subfolder, filename)))
     return send_from_directory(os.path.join(DATA_FOLDER, subfolder), filename)
 
 

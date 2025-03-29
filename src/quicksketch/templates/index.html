@@ -14,7 +14,7 @@
             <label for="subfolder">Select category:</label>
             <select id="subfolder">
                 {% for subfolder in subfolders %}
-                <option value="{{ subfolder }}">{{ subfolder }}</option>
+                <option value="{{ subfolder['name'] }}">{{ subfolder['name'] }} ({{ subfolder['count'] }})</option>
                 {% endfor %}
             </select>
         </div>
