@@ -70,12 +70,13 @@ document.addEventListener('DOMContentLoaded', function () {
             currentImageIndex--;
             sketchImage.src = imageHistory[currentImageIndex];
 
-            // Update UI
-            updateTimerDisplay(0);
+            // Reset timer but keep it paused
+            timeRemaining = timerDuration;
+            updateTimerDisplay(timeRemaining);
             
-            // Reset pause state
-            isPaused = false;
-            pauseBtn.textContent = 'Pause';
+            // Set pause state
+            isPaused = true;
+            pauseBtn.textContent = 'Resume';
         }
     });
     
