@@ -6,11 +6,10 @@
     <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
 </head>
 <body>
-    <h1>Quick Sketch Practice Tool</h1>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
     <div id="setup" class="setup-container">
-        <h2>Setup</h2>
-        <div>
+        <h1>Quick Sketch Practice Tool</h1>
+        <div class="setup-option">
             <label for="subfolder">Select category:</label>
             <select id="subfolder">
                 {% for subfolder in subfolders %}
@@ -18,27 +17,35 @@
                 {% endfor %}
             </select>
         </div>
-        <div>
+        <div class="setup-option">
             <label for="timer-container">Set timer:</label>
             <div id="timer-container" class="timer-input-container">
-                <input type="number" id="timer-minutes" min="0" max="59" value="1" class="timer-input"> : 
+                <input type="number" id="timer-minutes" min="0" max="59" value="1" class="timer-input"> 
+                <span class="timer-separator">:</span> 
                 <input type="number" id="timer-seconds" min="0" max="59" value="0" class="timer-input">
-                <span class="timer-label">min : sec</span>
+                <span class="timer-label">minutes : seconds</span>
             </div>
         </div>
-        <button id="start-btn">Start Practice</button>
+        <button id="start-btn">Start Practice ▶</button>
     </div>
 
     <div id="practice" class="hidden">
-        <div class="subfolder-header" id="current-subfolder"></div>
-        <div class="timer" id="timer-display"></div>
-        <div class="image-container">
-            <img id="sketch-image" src="" alt="Sketch reference">
-        </div>
-        <div class="controls">
-            <button id="back-btn">Back</button>
-            <button id="next-btn">Next Image</button>
-            <button id="stop-btn">Stop Practice</button>
+        <div class="practice-container">
+            <div class="practice-sidebar">
+                <div class="practice-header">
+                    <h2>Practice Session</h2>
+                    <div class="subfolder-header" id="current-subfolder"></div>
+                    <div class="timer" id="timer-display"></div>
+                </div>
+                <div class="controls">
+                    <button id="back-btn">← Previous</button>
+                    <button id="next-btn">Next Image →</button>
+                    <button id="stop-btn">End Session</button>
+                </div>
+            </div>
+            <div class="image-container">
+                <img id="sketch-image" src="" alt="Sketch reference">
+            </div>
         </div>
     </div>
 </body>
