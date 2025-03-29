@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Start practice session
     startBtn.addEventListener('click', () => {
-        currentSubfolder = subfolderSelect.value;
+        currentSubfolder = decodeURIComponent(subfolderSelect.value);
         timerDuration = parseInt(timerSelect.value);
 
         // Set the subfolder header

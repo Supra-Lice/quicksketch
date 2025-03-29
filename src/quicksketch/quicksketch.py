@@ -32,6 +32,7 @@ class Subfolder:
 
 @app.route("/")
 def index() -> str:
+    """Get the index page."""
     path = Path(DATA_FOLDER)
     if not path.is_dir():
         abort(404)
@@ -48,6 +49,7 @@ def index() -> str:
 
 @app.route("/random/<subfolder>")
 def random_image(subfolder: str) -> Response:
+    """Sample a random image."""
     path = Path(DATA_FOLDER) / unquote(subfolder)
     if not path.is_dir():
         abort(404)
@@ -63,7 +65,8 @@ def random_image(subfolder: str) -> Response:
 
 @app.route("/images/<subfolder>/<filename>")
 def serve_image(subfolder: str, filename: str) -> Response:
-    return send_from_directory(Path(DATA_FOLDER) / subfolder, unquote(filename))
+    """Get a single image content."""
+    return send_from_directory(Path(DATA_FOLDER) / unquote(subfolder), unquote(filename))
 
 
 def get_args() -> argparse.Namespace:
@@ -103,7 +106,10 @@ def get_args() -> argparse.Namespace:
 def main():
     args = get_args()
     global DATA_FOLDER
-    DATA_FOLDER = str(Path(args.folder).absolute)
+    DATA_FOLDER = str(Path(args.folder).absolute())
+    if not Path(args.folder).is_dir():
+        raise FileNotFoundError(f"Data folder does not exist: {args.folder}.")
+
     app.run(host=args.address, debug=args.debug, port=args.port)
 
 
