@@ -7,26 +7,30 @@
 </head>
 <body>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
-    <div id="setup" class="setup-container">
+
+    <div id="setup" class="content-wrapper">
         <h1>Quick Sketch Practice Tool</h1>
-        <div class="setup-option">
-            <label for="subfolder">Select category:</label>
-            <select id="subfolder">
-                {% for subfolder in subfolders %}
-                <option value="{{ subfolder.key }}">{{ subfolder.name }} ({{ subfolder.count }})</option>
-                {% endfor %}
-            </select>
-        </div>
-        <div class="setup-option">
-            <label for="timer-container">Set timer:</label>
-            <div id="timer-container" class="timer-input-container">
-                <input type="number" id="timer-minutes" min="0" max="59" value="1" class="timer-input"> 
-                <span class="timer-separator">:</span> 
-                <input type="number" id="timer-seconds" min="0" max="59" value="0" class="timer-input">
-                <span class="timer-label">minutes : seconds</span>
+        <div class="setup-container">
+            <h2>Setup Your Practice</h2>
+            <div class="setup-option">
+                <label for="subfolder">Select category:</label>
+                <select id="subfolder">
+                    {% for subfolder in subfolders %}
+                    <option value="{{ subfolder.key }}">{{ subfolder.name }} ({{ subfolder.count }})</option>
+                    {% endfor %}
+                </select>
             </div>
+            <div class="setup-option">
+                <label for="timer-container">Set timer:</label>
+                <div id="timer-container" class="timer-input-container">
+                    <input type="number" id="timer-minutes" min="0" max="59" value="1" class="timer-input"> 
+                    <span class="timer-separator">:</span> 
+                    <input type="number" id="timer-seconds" min="0" max="59" value="0" class="timer-input">
+                    <span class="timer-label">minutes : seconds</span>
+                </div>
+            </div>
+            <button id="start-btn">Start Practice ▶</button>
         </div>
-        <button id="start-btn">Start Practice ▶</button>
     </div>
 
     <div id="practice" class="hidden">
