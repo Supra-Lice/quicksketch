@@ -7,6 +7,7 @@ let imageHistory = [];
 let currentImageIndex = -1;
 let preloadedImageUrl = null;
 let isPaused = false;
+let isGrayscale = false;
 document.addEventListener('DOMContentLoaded', function () {
     // DOM elements
     const setupDiv = document.getElementById('setup');
@@ -19,6 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const pauseBtn = document.getElementById('pause-btn');
     const nextBtn = document.getElementById('next-btn');
     const stopBtn = document.getElementById('stop-btn');
+    const grayscaleBtn = document.getElementById('grayscale-btn');
     const timerDisplay = document.getElementById('timer-display');
     const sketchImage = document.getElementById('sketch-image');
     const currentSubfolderDisplay = document.getElementById('current-subfolder');
@@ -48,6 +50,8 @@ document.addEventListener('DOMContentLoaded', function () {
         // Start preloading first, then get first image
         preloadNextImage();
         getNextImage();
+        setGrayscale();
+        
     });
 
     // Stop practice and return to setup
@@ -63,6 +67,19 @@ document.addEventListener('DOMContentLoaded', function () {
     // Get next image
     nextBtn.addEventListener('click', () => {
         getNextImage();
+    });
+
+    function setGrayscale() {
+        if (isGrayscale) {
+            sketchImage.style.filter = 'grayscale(100%)';
+        } else {
+            sketchImage.style.filter = 'none';
+        }
+    }
+
+    grayscaleBtn.addEventListener('click', () => {
+        isGrayscale = !isGrayscale;
+        setGrayscale()
     });
 
     // Go back to previous image
@@ -223,7 +240,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Handle keyboard shortcuts
     document.addEventListener('keydown', function(event) {
         // Prevent default behavior for these keys
-        if (['Space', 'ArrowLeft', 'ArrowRight', 'Enter', 'Escape', 'KeyW', 'KeyD'].includes(event.code)) {
+        if (['Space', 'ArrowLeft', 'ArrowRight', 'Enter', 'Escape', 'KeyA', 'KeyD', 'Tab'].includes(event.code)) {
             event.preventDefault();
         }
         
@@ -240,7 +257,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     pauseBtn.click();
                     break;
                 case 'ArrowLeft':
-                case 'KeyW':
+                case 'KeyA':
                     backBtn.click();
                     break;
                 case 'ArrowRight':
@@ -249,6 +266,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     break;
                 case 'Escape':
                     stopBtn.click();
+                    break;
+                case 'Tab':
+                    grayscaleBtn.click();
                     break;
             }
         }
