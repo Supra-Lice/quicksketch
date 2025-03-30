@@ -1,6 +1,7 @@
 # Quicksketch
 
-A simple tool for timed drawing practice that allows you to practice on your own custom image-sets locally without an internet connection.
+A simple tool for timed drawing practice for your own image-sets locally without an internet connection.
+This project was inspired by [Line of Action](https://line-of-action.com/), as well as [Sketchdaily](https://www.sketchdaily.net/), which offer excellent timed practice with their curated image sets.
 
 ## Installation
 
@@ -59,9 +60,6 @@ The app expects a directory structure like this:
 
 Each subfolder becomes a selectable category in the app.
 
-## Inspiration
-
-This project was inspired by [Line of Action](https://line-of-action.com/), which offers excellent timed practice with their curated image sets. Quicksketch was created to allow practice with personal image collections.
 
 ## Attribution
 
