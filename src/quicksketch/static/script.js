@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const timerDisplay = document.getElementById('timer-display');
     const sketchImage = document.getElementById('sketch-image');
     const currentSubfolderDisplay = document.getElementById('current-subfolder');
+    const currentFilenameDisplay = document.getElementById('current-filename');
     
     // Track if we're in practice mode
     let inPracticeMode = false;
@@ -129,6 +130,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Create an image object to preload the image in browser cache
                 const preloader = new Image();
                 preloader.src = preloadedImageUrl;
+                currentFilenameDisplay.textContent = `Filename: ${data.filename}`;
             })
             .catch(error => {
                 console.error('Error preloading image:', error);

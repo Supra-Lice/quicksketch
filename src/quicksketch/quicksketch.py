@@ -46,7 +46,7 @@ def random_image(subfolder: str) -> Response:
 
     random_file = random.choice(files)
 
-    return jsonify({"image_url": f"/images/{subfolder}/{quote(random_file.name)}"})
+    return jsonify({"image_url": f"/images/{subfolder}/{quote(random_file.name)}", "filename": random_file.name})
 
 
 @app.route("/images/<subfolder>/<filename>")
