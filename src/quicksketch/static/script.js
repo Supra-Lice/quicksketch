@@ -5,7 +5,7 @@ let timerInterval = null;
 let timeRemaining = 0;
 let imageHistory = [];
 let currentImageIndex = -1;
-let preloadedImageUrl = null;
+let preloadedImage = null;
 let isPaused = false;
 let isGrayscale = false;
 document.addEventListener('DOMContentLoaded', function () {
@@ -91,7 +91,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Show previous image
             currentImageIndex--;
-            sketchImage.src = imageHistory[currentImageIndex];
+            sketchImage.src = imageHistory[currentImageIndex].url;
+            currentFilenameDisplay.textContent = `Filename: ${imageHistory[currentImageIndex].filename}`;
 
             // Reset timer but keep it paused
             timeRemaining = timerDuration;
@@ -126,15 +127,17 @@ document.addEventListener('DOMContentLoaded', function () {
         fetch(`/random/${currentSubfolder}`)
             .then(response => response.json())
             .then(data => {
-                preloadedImageUrl = data.image_url;
+                preloadedImage = {
+                    url: data.image_url,
+                    filename: data.filename
+                };
                 // Create an image object to preload the image in browser cache
                 const preloader = new Image();
-                preloader.src = preloadedImageUrl;
-                currentFilenameDisplay.textContent = `Filename: ${data.filename}`;
+                preloader.src = preloadedImage.url;
             })
             .catch(error => {
                 console.error('Error preloading image:', error);
-                preloadedImageUrl = null;
+                preloadedImage = null;
             });
     }
 
@@ -147,14 +150,14 @@ document.addEventListener('DOMContentLoaded', function () {
         isPaused = false;
         pauseBtn.textContent = 'Pause';
 
-        if (preloadedImageUrl) {
+        if (preloadedImage) {
             // Use the preloaded image if available
-            const imageUrl = preloadedImageUrl;
-            preloadedImageUrl = null;
+            const imageData = preloadedImage;
+            preloadedImage = null;
             
             // Add to history if it's a new image (not going back)
             if (currentImageIndex === imageHistory.length - 1 || imageHistory.length === 0) {
-                imageHistory.push(imageUrl);
+                imageHistory.push(imageData);
                 currentImageIndex = imageHistory.length - 1;
             } else {
                 // We were viewing history, now moving forward
@@ -162,7 +165,8 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             // Display the image
-            sketchImage.src = imageHistory[currentImageIndex];
+            sketchImage.src = imageHistory[currentImageIndex].url;
+            currentFilenameDisplay.textContent = `Filename: ${imageHistory[currentImageIndex].filename}`;
 
             // Start timer if not unlimited
             if (timerDuration > 0) {
@@ -178,9 +182,14 @@ document.addEventListener('DOMContentLoaded', function () {
             fetch(`/random/${currentSubfolder}`)
                 .then(response => response.json())
                 .then(data => {
+                    const imageData = {
+                        url: data.image_url,
+                        filename: data.filename
+                    };
+                    
                     // Add to history if it's a new image (not going back)
                     if (currentImageIndex === imageHistory.length - 1 || imageHistory.length === 0) {
-                        imageHistory.push(data.image_url);
+                        imageHistory.push(imageData);
                         currentImageIndex = imageHistory.length - 1;
                     } else {
                         // We were viewing history, now moving forward
@@ -188,7 +197,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
 
                     // Display the image
-                    sketchImage.src = imageHistory[currentImageIndex];
+                    sketchImage.src = imageHistory[currentImageIndex].url;
+                    currentFilenameDisplay.textContent = `Filename: ${imageHistory[currentImageIndex].filename}`;
 
                     // Start timer if not unlimited
                     if (timerDuration > 0) {
